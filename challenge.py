@@ -72,13 +72,33 @@ DATA = [
 ]
 
 
-def run():
+def get_old_dev(dev):
+    new_dev = dev.copy()
+    new_dev['old'] = new_dev['age'] > 30
+    return new_dev
 
-    all_python_devs =  # Using filter, generate a list with all the python devs
-    all_Platzi_workers =  # Using filter, generate a list with all the Platzi workers
-    adults =  # Using filter, generate a list with all people over 18 years old
-    workers =  # Using map, generate a new list of people with a key 'homeless' with True or False values, if 'organization' have something or not
-    old_people =  # Using map, generate a new list of people with a key 'old' with True or False values, if 'age' is greater than 30 or not
+
+def get_homeless_dev(dev):
+    new_dev = dev.copy()
+    new_dev['homeless'] = new_dev['organization'] == ''
+    return new_dev
+
+
+def run():
+    # Using filter, generate a list with all the python devs
+    all_python_devs = filter(lambda dev: dev['language'] == 'python', DATA)
+
+    # Using filter, generate a list with all the Platzi workers
+    all_Platzi_workers = filter(lambda dev: dev['organization'] == 'Platzi', DATA)
+
+    # Using filter, generate a list with all people over 18 years old
+    adults = filter(lambda dev: dev['age'] > 18, DATA)
+
+    # Using map, generate a new list of people with a key 'homeless' with True or False values, if 'organization' have something or not
+    workers = list(map(lambda dev: get_homeless_dev(dev), DATA))
+    
+    # Using map, generate a new list of people with a key 'old' with True or False values, if 'age' is greater than 30 or not
+    old_people = list(map(lambda dev: get_old_dev(dev), DATA))
 
     print('Python devs: ')
     for dev in all_python_devs:
